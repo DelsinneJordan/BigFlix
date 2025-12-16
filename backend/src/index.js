@@ -30,11 +30,20 @@ const { requireSetup, requireNoSetup } = require('./middleware/setup');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Rate limiting
+// Rate limiting - generous limits for normal usage
 const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute window
+  max: 100, // 100 requests per minute per IP
+  message: { error: 'Too many requests, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Stricter rate limit for auth endpoints
+const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: { error: 'Too many requests, please try again later.' }
+  max: 20, // 20 login attempts per 15 minutes
+  message: { error: 'Too many login attempts, please try again later.' }
 });
 
 // Middleware
@@ -61,7 +70,7 @@ app.get('/api/setup/status', (req, res) => {
 });
 
 // Public routes (no auth required)
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/setup', requireNoSetup, setupRoutes);
 
 // Protected routes (require authentication)
