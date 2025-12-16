@@ -1,21 +1,4 @@
-# Build stage for frontend
-FROM node:20-alpine AS frontend-build
-
-WORKDIR /app/frontend
-
-# Copy frontend package files
-COPY frontend/package*.json ./
-
-# Install frontend dependencies
-RUN npm ci --silent
-
-# Copy frontend source
-COPY frontend/ ./
-
-# Build frontend
-RUN npm run build
-
-# Production stage
+# Production image for BigFlix
 FROM node:20-alpine
 
 WORKDIR /app
@@ -26,10 +9,10 @@ WORKDIR /app/backend
 RUN npm ci --omit=dev --silent
 
 # Copy backend source
-COPY backend/ ./
+COPY backend/src ./src
 
-# Copy built frontend
-COPY --from=frontend-build /app/frontend/build ../frontend/build
+# Copy pre-built frontend
+COPY frontend/build ../frontend/build
 
 # Create data directory for SQLite database
 RUN mkdir -p /app/data
