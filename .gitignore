@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+backend/data/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Frontend - only include the build folder
+frontend/src/
+frontend/public/
+frontend/node_modules/
+frontend/package.json
+frontend/package-lock.json
+frontend/README.md
+frontend/.gitignore
+# Keep: frontend/build/ (compiled React app for deployment)
+
+# Temporary files
+*.tmp
+*.temp
