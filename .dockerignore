@@ -2,9 +2,12 @@
 node_modules/
 **/node_modules/
 
-# Build outputs (we rebuild in Docker)
-frontend/build/
-dist/
+# Frontend source (we use pre-built)
+frontend/src/
+frontend/public/
+frontend/node_modules/
+frontend/package*.json
+# Keep frontend/build/ - needed for deployment
 
 # Development files
 .git/
